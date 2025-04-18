@@ -1,4 +1,5 @@
 
+
 namespace postitfullstack.Services;
 
 public class AlbumsService
@@ -15,5 +16,11 @@ public class AlbumsService
 
         Album album = _repo.CreateAlbum(albumData);
         return album;
+    }
+
+    internal List<Album> GetAllAlbums()
+    {
+        List<Album> albums = _repo.GetAllAlbums();
+        return albums;
     }
 }

@@ -1,4 +1,5 @@
 
+
 namespace postitfullstack.Repositories;
 
 public class AlbumsRepository
@@ -29,6 +30,18 @@ public class AlbumsRepository
 
         Album album = _db.Query<Album, Profile, Album>(sql, JoinCreator, albumData).FirstOrDefault();
         return album;
+    }
+
+    internal List<Album> GetAllAlbums()
+    {
+        string sql = @"
+    SELECT
+    albums.*,
+    accounts.*
+    FROM albums
+    INNER JOIN accounts ON accounts.id = albums.creator_id;";
+        List<Album> albums = _db.Query<Album, Profile, Album>(sql, JoinCreator).ToList();
+        return albums;
     }
 
     private Album JoinCreator(Album album, Profile profile)

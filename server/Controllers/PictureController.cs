@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace postitfullstack.Controllers;
 
-[Authorize]
-[ApiController]
-[Route("[controller]")]
 public class PictureController : ControllerBase
 {
     private readonly PictureService _pictureService;

@@ -1,7 +1,19 @@
-
 using System.Reflection;
 
 namespace postitfullstack.Repositories;
+public class AlbumRepository
+{
+    private readonly IDbConnection _db;
+
+    public AlbumRepository()
+    {
+    }
+
+    public AlbumRepository(IDbConnection db)
+    {
+        _db = db;
+    }
+}
 
 public class PictureRepository
 {

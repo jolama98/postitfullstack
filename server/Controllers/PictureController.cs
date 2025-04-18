@@ -1,6 +1,10 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace postitfullstack.Controllers;
+
+
+[ApiController]
+[Route("api/[controller]")]
+
+
 
 public class PictureController : ControllerBase
 {

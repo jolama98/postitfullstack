@@ -1,19 +1,6 @@
 using System.Reflection;
 
 namespace postitfullstack.Repositories;
-public class AlbumRepository
-{
-    private readonly IDbConnection _db;
-
-    public AlbumRepository()
-    {
-    }
-
-    public AlbumRepository(IDbConnection db)
-    {
-        _db = db;
-    }
-}
 
 public class PictureRepository
 {
@@ -36,8 +23,23 @@ public class PictureRepository
 
     internal List<Picture> GetAllPics()
     {
-        string sql = "SELECT * FROM picture";
-        return _db.Query<Picture>(sql).ToList();
+        string sql = @"
+        SELECT picture.*,
+        accounts.*
+        FROM picture
+        JOIN accounts ON accounts.id = picture.creatorId
+        GROUP BY (picture.id)
+        ;";
+        List<Picture> pictures = _db.Query<Picture, Profile, Picture>(sql, JoinCreator).ToList();
+        return pictures;
+    }
+
+
+
+    private Picture JoinCreator(Picture picture, Profile profile)
+    {
+        picture.Creator = profile;
+        return picture;
     }
 }
 

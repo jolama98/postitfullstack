@@ -1,4 +1,7 @@
 namespace postitfullstack.Controllers;
+[ApiController]
+[Authorize]
+[Route("[controller]")]
 public class AccountController : ControllerBase
 {
   private readonly AccountService _accountService;

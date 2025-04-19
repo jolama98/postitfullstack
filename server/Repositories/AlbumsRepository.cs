@@ -1,5 +1,6 @@
 
 
+
 namespace postitfullstack.Repositories;
 
 public class AlbumsRepository
@@ -29,6 +30,42 @@ public class AlbumsRepository
     WHERE albums.id = LAST_INSERT_ID();";
 
         Album album = _db.Query<Album, Profile, Album>(sql, JoinCreator, albumData).FirstOrDefault();
+        return album;
+    }
+
+    internal void ArchiveAlbum(Album album)
+    {
+        string sql = "UPDATE albums SET IsArchived = @IsArchived WHERE id = @Id LIMIT 1;";
+
+        int rowsAffected = _db.Execute(sql, album);
+        switch (rowsAffected)
+        {
+            case 1:
+                return;
+            case 0:
+                throw new Exception("UPDATE WAS NOT SUCCESSFUL");
+            default:
+                throw new Exception("UPDATE WAS TOO SUCCESSFUL");
+        }
+    }
+
+    internal Album GetAlbumById(int albumId)
+    {
+        string sql = @"
+        SELECT
+        albums.*,
+        accounts.*
+        FROM albums
+        INNER JOIN accounts ON accounts.id = albums.creator_id
+        WHERE albums.id = @albumId; ";
+
+
+
+        Album album = _db.Query<Album, Profile, Album>(sql, JoinCreator, new { albumId }).FirstOrDefault();
+        if (album == null)
+        {
+            throw new Exception("Invalid Album Id");
+        }
         return album;
     }
 

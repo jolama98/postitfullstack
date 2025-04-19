@@ -1,5 +1,6 @@
 
 
+
 namespace postitfullstack.Services;
 
 public class AlbumsService
@@ -17,6 +18,33 @@ public class AlbumsService
         Album album = _repo.CreateAlbum(albumData);
         return album;
     }
+
+    internal Album GetAlbumById(int albumId)
+    {
+        Album album = _repo.GetAlbumById(albumId);
+        if (album == null)
+        {
+            throw new Exception("No album found with the id of " + albumId);
+        }
+        return album;
+    }
+
+    internal Album ArchiveAlbum(int albumId, Account userInfo)
+    {
+        Album album = GetAlbumById(albumId);
+
+        if (album.CreatorId != userInfo.Id)
+        {
+            throw new Exception($"YOU CANNOT ARCHIVE ANOTHER USER'S ALBUM, {userInfo.Name.ToUpper()}!");
+        }
+
+        album.IsArchived = !album.IsArchived;
+
+        _repo.ArchiveAlbum(album);
+
+        return album;
+    }
+
 
     internal List<Album> GetAllAlbums()
     {

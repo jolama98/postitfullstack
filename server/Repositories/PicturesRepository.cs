@@ -2,11 +2,11 @@ using System.Reflection;
 
 namespace postitfullstack.Repositories;
 
-public class PictureRepository
+public class PicturesRepository
 {
     private readonly IDbConnection _db;
 
-    public PictureRepository(IDbConnection db)
+    public PicturesRepository(IDbConnection db)
     {
         _db = db;
     }
@@ -14,10 +14,20 @@ public class PictureRepository
     internal Picture CreatePicture(Picture pictureData)
     {
         string sql = @"
-        INSERT INTO picture (creatorId, albumId, url)
+        INSERT INTO pictures (creator_id, album_id, url)
         VALUES (@CreatorId, @AlbumId, @Url);
-        SELECT LAST_INSERT_ID();";
-        pictureData.Id = _db.ExecuteScalar<int>(sql, pictureData);
+        SELECT
+        pictures.*,
+        accounts.*
+        FROM pictures
+        INNER JOIN accounts ON accounts.id = pictures.creator_id
+        WHERE pictures.id = LAST_INSERT_ID()
+        ;";
+        Picture createdPicture = _db.Query(sql, (Picture picture, Profile account) =>
+     {
+         picture.Creator = account;
+         return picture;
+     }, pictureData).SingleOrDefault();
         return pictureData;
     }
 
@@ -27,7 +37,7 @@ public class PictureRepository
         SELECT picture.*,
         accounts.*
         FROM picture
-        JOIN accounts ON accounts.id = picture.creatorId
+        JOIN accounts ON accounts.id = picture.creator_id
         GROUP BY (picture.id)
         ;";
         List<Picture> pictures = _db.Query<Picture, Profile, Picture>(sql, JoinCreator).ToList();

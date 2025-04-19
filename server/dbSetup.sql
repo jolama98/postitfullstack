@@ -7,11 +7,11 @@ CREATE TABLE IF NOT EXISTS accounts(
   picture VARCHAR(255) COMMENT 'User Picture'
 ) default charset utf8mb4 COMMENT '';
 
-CREATE TABLE IF NOT EXISTS picture(
+CREATE TABLE IF NOT EXISTS pictures(
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'primary key',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
-  url VARCHAR(255)NOT NULL COMMENT 'Picture URL',
+  url VARCHAR(255) COMMENT 'Picture URL',
   album_id INT NOT NULL COMMENT 'Album ID',
 creator_id VARCHAR(255) NOT NULL COMMENT 'Creator ID',
   FOREIGN KEY (creator_id) REFERENCES accounts(id) ON DELETE CASCADE ,
@@ -39,7 +39,7 @@ creator_id VARCHAR(255) NOT NULL COMMENT 'Creator ID',
 )
 
  DROP TABLE watcher;
-DROP TABLE picture;
+DROP TABLE pictures;
  DROP TABLE albums;
 
 

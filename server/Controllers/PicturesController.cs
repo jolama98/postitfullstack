@@ -4,16 +4,14 @@ namespace postitfullstack.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-
-
-public class PictureController : ControllerBase
+public class PicturesController : ControllerBase
 {
-    private readonly PictureService _pictureService;
+    private readonly PicturesService _picturesService;
     private readonly Auth0Provider _auth0Provider;
 
-    public PictureController(PictureService pictureService, Auth0Provider auth0Provider)
+    public PicturesController(PicturesService picturesService, Auth0Provider auth0Provider)
     {
-        _pictureService = pictureService;
+        _picturesService = picturesService;
         _auth0Provider = auth0Provider;
     }
 
@@ -23,7 +21,7 @@ public class PictureController : ControllerBase
     {
         try
         {
-            List<Picture> picture = _pictureService.GetAllPics();
+            List<Picture> picture = _picturesService.GetAllPics();
             return Ok(picture);
         }
         catch (Exception exception)
@@ -32,8 +30,8 @@ public class PictureController : ControllerBase
         }
     }
 
-    [HttpPost]
     [Authorize]
+    [HttpPost]
     public async Task<ActionResult<Picture>> CreatePicture([FromBody] Picture pictureData)
 
     {
@@ -41,7 +39,7 @@ public class PictureController : ControllerBase
         {
             Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
             pictureData.CreatorId = userInfo.Id;
-            Picture picture = _pictureService.CreatePicture(pictureData);
+            Picture picture = _picturesService.CreatePicture(pictureData);
             return Ok(picture);
         }
         catch (Exception exception)

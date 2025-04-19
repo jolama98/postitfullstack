@@ -34,17 +34,35 @@ public class PicturesRepository
     internal List<Picture> GetAllPics()
     {
         string sql = @"
-        SELECT picture.*,
+        SELECT pictures.*,
         accounts.*
-        FROM picture
-        JOIN accounts ON accounts.id = picture.creator_id
+        FROM pictures
+        JOIN accounts ON accounts.id = pictures.creator_id
         GROUP BY (picture.id)
         ;";
         List<Picture> pictures = _db.Query<Picture, Profile, Picture>(sql, JoinCreator).ToList();
         return pictures;
     }
 
+    internal List<Picture> GetPicturesByAlbumId(int albumId)
+    {
+        string sql = @"
+    SELECT
+    pictures.*,
+    accounts.*
+    FROM pictures
+    INNER JOIN accounts ON accounts.id = pictures.creator_id
+    WHERE pictures.album_id = @albumId;";
 
+
+        List<Picture> pictures = _db.Query(sql, (Picture picture, Profile profile) =>
+      {
+          picture.Creator = profile;
+          return picture;
+      },
+      new { albumId }).ToList();
+        return pictures;
+    }
 
     private Picture JoinCreator(Picture picture, Profile profile)
     {

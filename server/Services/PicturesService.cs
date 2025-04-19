@@ -1,5 +1,6 @@
 
 using System.Reflection;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace postitfullstack.Services;
 public class PicturesService
@@ -28,6 +29,13 @@ public class PicturesService
     internal List<Picture> GetAllPics()
     {
         List<Picture> pictures = _repo.GetAllPics();
+        return pictures;
+    }
+
+    internal List<Picture> GetPicturesByAlbumId(int albumId)
+    {
+
+        List<Picture> pictures = _repo.GetPicturesByAlbumId(albumId);
         return pictures;
     }
 }

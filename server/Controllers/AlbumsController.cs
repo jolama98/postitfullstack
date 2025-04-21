@@ -52,6 +52,7 @@ public class AlbumsController : ControllerBase
     {
         try
         {
+            Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
             Album album = _albumsService.GetAlbumById(albumId);
             return Ok(album);
         }

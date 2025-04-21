@@ -11,27 +11,20 @@ public class WatchersRepository
         _db = db;
     }
 
-    internal WatcherProfile CreateWatcher(Watcher watcherData)
+    internal Watcher CreateWatcher(Watcher watcherData)
     {
         string sql = @"
-        INSERT INTO
-        watchers(album_id, account_id)
-        VALUES (@AlbumId, @AccountId);
+    INSERT INTO
+    watchers( album_id, account_id)
+    VALUES ( @AlbumId, @AccountId);
 
         SELECT
-        watchers.*,
-        accounts.*
+        *
         FROM watchers
-        INNER JOIN accounts ON accounts.id = watchers.account_id
-        WHERE watchers.id = LAST_INSERT_ID();";
+        WHERE watchers.id = LAST_INSERT_ID(); ";
+        Watcher watcher = _db.Query<Watcher>(sql, watcherData).FirstOrDefault();
+        return watcher;
 
-        WatcherProfile watcherProfile = _db.Query(sql, (Watcher watcher, WatcherProfile profile) =>
-        {
-            profile.AlbumId = watcher.AlbumId;
-            profile.WatcherId = watcher.Id;
-            return profile;
-        }, watcherData).SingleOrDefault();
-        return watcherProfile;
     }
+    // WHERE vaultKeep.id = LAST_INSERT_ID();";
 }
-

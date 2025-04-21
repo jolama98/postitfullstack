@@ -16,14 +16,14 @@ public class WatchersController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<WatcherProfile>> CreateWatcher([FromBody] Watcher watcherData)
+    public async Task<ActionResult<Watcher>> CreateWatcher([FromBody] Watcher watcherData)
     {
         try
         {
             Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
             watcherData.AccountId = userInfo.Id;
-            WatcherProfile watcherProfile = _watchersService.CreateWatcher(watcherData);
-            return Ok(watcherProfile);
+            Watcher watcher = _watchersService.CreateWatcher(watcherData);
+            return Ok(watcher);
         }
         catch (Exception exception)
         {

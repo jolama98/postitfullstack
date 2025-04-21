@@ -14,5 +14,4 @@ public class WatcherAlbum : Album
 {
     public int WatcherId { get; set; }
     public string AccountId { get; set; }
-
 }

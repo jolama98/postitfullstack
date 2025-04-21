@@ -10,9 +10,9 @@ public class WatchersService
         _watchersRepository = watchersRepository;
     }
 
-    internal WatcherProfile CreateWatcher(Watcher watcherData)
+    internal Watcher CreateWatcher(Watcher watcherData)
     {
-        WatcherProfile watcherProfile = _watchersRepository.CreateWatcher(watcherData);
-        return watcherProfile;
+        Watcher watcher = _watchersRepository.CreateWatcher(watcherData);
+        return watcher;
     }
 }

@@ -44,44 +44,12 @@ DROP TABLE albums;
 
 
  CREATE TABLE watchers(
-  id VARCHAR(255) NOT NULL PRIMARY KEY COMMENT 'primary key',
-created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
-updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'primary key',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
 account_id VARCHAR(255) NOT NULL,
 album_id INT NOT NULL,
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE ,
   FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE,
   UNIQUE (account_id, album_id)
- );
-
-
-
-INSERT INTO
-    albums (
-        title,
-        description,
-        coverImage,
-        creator_id,
-        category,
-        isArchived
-    )
-VALUES (
-        'cool car games',
-        'This is really cool car games',
-        'https://plus.unsplash.com/premium_photo-1682125845754-9a4b0d77a66a?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        '66d109c1258b754bca428053',
-        'games',
-        false
-    );
-
-INSERT INTO picture
-(
-    url,
-    album_id,
-    creator_id
-)
-VALUES (
-    'https://plus.unsplash.com/premium_photo-1682125845754-9a4b0d77a66a?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    '1',
-    '66d109c1258b754bca428053'
-);
+ )

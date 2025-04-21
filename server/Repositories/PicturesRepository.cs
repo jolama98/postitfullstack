@@ -13,21 +13,22 @@ public class PicturesRepository
     internal Picture CreatePicture(Picture pictureData)
     {
         string sql = @"
-        INSERT INTO pictures (creator_id, album_id, url)
-        VALUES (@CreatorId, @AlbumId, @Url);
-        SELECT
-        pictures.*,
-        accounts.*
-        FROM pictures
-        INNER JOIN accounts ON accounts.id = pictures.creator_id
-        WHERE pictures.id = LAST_INSERT_ID()
-        ;";
+         INSERT INTO
+    pictures(img_url, creator_id, album_id)
+    VALUES(@ImgUrl, @CreatorId, @AlbumId);
+    
+    SELECT
+    pictures.*,
+    accounts.*
+    FROM pictures
+    INNER JOIN accounts ON accounts.id = pictures.creator_id
+    WHERE pictures.id = LAST_INSERT_ID();";
         Picture createdPicture = _db.Query(sql, (Picture picture, Profile account) =>
      {
          picture.Creator = account;
          return picture;
      }, pictureData).SingleOrDefault();
-        return pictureData;
+        return createdPicture;
     }
 
     internal Picture GetPictureById(int pictureId)

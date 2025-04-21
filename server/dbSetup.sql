@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS albums(
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
   title VARCHAR(255) NOT NULL COMMENT 'Album Name',
 description TEXT COMMENT 'Album Description',
-isArchived BOOLEAN NOT NULL DEFAULT false COMMENT 'Is Archived',
+archived BOOLEAN NOT NULL DEFAULT false,
 category ENUM(
     'aesthetics',
     'games',
@@ -38,20 +38,21 @@ creator_id VARCHAR(255) NOT NULL COMMENT 'Creator ID',
   FOREIGN KEY (creator_id) REFERENCES accounts(id) ON DELETE CASCADE
 )
 
- DROP TABLE watcher;
+DROP TABLE watchers;
 DROP TABLE pictures;
- DROP TABLE albums;
+DROP TABLE albums;
 
 
- CREATE TABLE watcher(
+ CREATE TABLE watchers(
   id VARCHAR(255) NOT NULL PRIMARY KEY COMMENT 'primary key',
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
-account_id VARCHAR(255) NOT NULL COMMENT 'Account ID',
-album_id INT NOT NULL COMMENT 'Album ID',
+account_id VARCHAR(255) NOT NULL,
+album_id INT NOT NULL,
   FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE ,
-  FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE
- )
+  FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE,
+  UNIQUE (account_id, album_id)
+ );
 
 
 

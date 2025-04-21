@@ -15,20 +15,6 @@ public class PicturesController : ControllerBase
         _auth0Provider = auth0Provider;
     }
 
-    [HttpGet]
-    public ActionResult<List<Picture>> GetAllPics()
-
-    {
-        try
-        {
-            List<Picture> picture = _picturesService.GetAllPics();
-            return Ok(picture);
-        }
-        catch (Exception exception)
-        {
-            return BadRequest(exception.Message);
-        }
-    }
 
     [Authorize]
     [HttpPost]
@@ -41,6 +27,22 @@ public class PicturesController : ControllerBase
             pictureData.CreatorId = userInfo.Id;
             Picture picture = _picturesService.CreatePicture(pictureData);
             return Ok(picture);
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
+    }
+
+    [Authorize]
+    [HttpDelete("{pictureId}")]
+    public async Task<ActionResult<string>> DeletePicture(int pictureId)
+    {
+        try
+        {
+            Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+            _picturesService.DeletePicture(pictureId, userInfo);
+            return Ok("Picture was deleted!");
         }
         catch (Exception exception)
         {

@@ -16,26 +16,32 @@ public class AlbumsRepository
         _db = db;
     }
 
+
     internal Album CreateAlbum(Album albumData)
     {
-
         string sql = @"
     INSERT INTO
     albums(title, description, cover_img, creator_id, category)
     VALUES(@Title, @Description, @CoverImg, @CreatorId, @Category);
-    SELECT albums.*,
+    
+    SELECT
+    albums.*,
     accounts.*
     FROM albums
-    JOIN accounts ON accounts.id = albums.creator_id
+    INNER JOIN accounts ON accounts.id = albums.creator_id
     WHERE albums.id = LAST_INSERT_ID();";
 
-        Album album = _db.Query<Album, Profile, Album>(sql, JoinCreator, albumData).FirstOrDefault();
-        return album;
+        Album createdAlbum = _db.Query(sql, (Album album, Profile account) =>
+        {
+            album.Creator = account;
+            return album;
+        }, albumData).SingleOrDefault();
+        return createdAlbum;
     }
 
     internal void ArchiveAlbum(Album album)
     {
-        string sql = "UPDATE albums SET IsArchived = @IsArchived WHERE id = @Id LIMIT 1;";
+        string sql = "UPDATE albums SET Archived = @Archived WHERE id = @Id LIMIT 1;";
 
         int rowsAffected = _db.Execute(sql, album);
         switch (rowsAffected)

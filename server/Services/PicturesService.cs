@@ -1,7 +1,3 @@
-
-using System.Reflection;
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace postitfullstack.Services;
 public class PicturesService
 {
@@ -18,19 +14,37 @@ public class PicturesService
     {
         Album album = _albumsService.GetAlbumById(pictureData.AlbumId);
 
-        if (album.IsArchived)
+        if (album.Archived)
         {
             throw new Exception(album.Title + " is archived and no longer accepting pictures!");
         }
         Picture picture = _repo.CreatePicture(pictureData);
         return picture;
     }
-
-    internal List<Picture> GetAllPics()
+    private Picture GetPictureById(int pictureId)
     {
-        List<Picture> pictures = _repo.GetAllPics();
-        return pictures;
+        Picture picture = _repo.GetPictureById(pictureId);
+
+        if (picture == null)
+        {
+            throw new Exception("Invalid picture id: " + pictureId);
+        }
+
+        return picture;
     }
+
+    internal void DeletePicture(int pictureId, Account userInfo)
+    {
+        Picture picture = GetPictureById(pictureId);
+
+        if (picture.CreatorId != userInfo.Id)
+        {
+            throw new Exception($"YOU CAN NOT DELETE ANOTHER USER'S PICTURE, {userInfo.Name.ToUpper()}!");
+        }
+
+        _repo.DeletePicture(pictureId);
+    }
+
 
     internal List<Picture> GetPicturesByAlbumId(int albumId)
     {

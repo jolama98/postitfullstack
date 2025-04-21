@@ -1,7 +1,6 @@
 using System.Reflection;
 
 namespace postitfullstack.Repositories;
-
 public class PicturesRepository
 {
     private readonly IDbConnection _db;
@@ -31,17 +30,24 @@ public class PicturesRepository
         return pictureData;
     }
 
-    internal List<Picture> GetAllPics()
+    internal Picture GetPictureById(int pictureId)
     {
-        string sql = @"
-        SELECT pictures.*,
-        accounts.*
-        FROM pictures
-        JOIN accounts ON accounts.id = pictures.creator_id
-        GROUP BY (picture.id)
-        ;";
-        List<Picture> pictures = _db.Query<Picture, Profile, Picture>(sql, JoinCreator).ToList();
-        return pictures;
+        string sql = "SELECT * FROM pictures WHERE id = @pictureId;";
+
+        Picture foundPicture = _db.Query<Picture>(sql, new { pictureId }).SingleOrDefault();
+
+        return foundPicture;
+    }
+    internal void DeletePicture(int pictureId)
+    {
+        string sql = "DELETE FROM pictures WHERE id = @pictureId LIMIT 1;";
+
+        int rowsAffected = _db.Execute(sql, new { pictureId });
+
+        if (rowsAffected != 1)
+        {
+            throw new Exception(rowsAffected + " ROWS WERE DELETED AND THAT IS NOT GOOD, BUD");
+        }
     }
 
     internal List<Picture> GetPicturesByAlbumId(int albumId)

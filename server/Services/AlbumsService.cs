@@ -38,7 +38,7 @@ public class AlbumsService
             throw new Exception($"YOU CANNOT ARCHIVE ANOTHER USER'S ALBUM, {userInfo.Name.ToUpper()}!");
         }
 
-        album.IsArchived = !album.IsArchived;
+        album.Archived = !album.Archived;
 
         _repo.ArchiveAlbum(album);
 

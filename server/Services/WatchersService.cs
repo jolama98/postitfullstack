@@ -1,4 +1,5 @@
 
+
 namespace postitfullstack.Services;
 
 public class WatchersService
@@ -14,5 +15,11 @@ public class WatchersService
     {
         Watcher watcher = _watchersRepository.CreateWatcher(watcherData);
         return watcher;
+    }
+
+    internal List<WatcherProfile> GetWatcherProfilesByAlbumId(int albumId)
+    {
+        List<WatcherProfile> watcherProfiles = _watchersRepository.GetWatcherProfilesByAlbumId(albumId);
+        return watcherProfiles;
     }
 }

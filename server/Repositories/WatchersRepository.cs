@@ -1,5 +1,6 @@
 
 
+
 namespace postitfullstack.Repositories;
 
 public class WatchersRepository
@@ -26,6 +27,28 @@ public class WatchersRepository
         Watcher watcher = _db.Query<Watcher>(sql, watcherData).FirstOrDefault();
         return watcher;
 
+    }
+
+    internal List<WatcherAlbum> GetMyWatcherAlbum(string accountId)
+    {
+        string sql = @"
+    SELECT
+    watchers.*,
+    albums.*,
+    accounts.*
+FROM watchers
+INNER JOIN albums ON albums.id = watchers.album_id
+INNER JOIN accounts ON accounts.id = albums.creator_id
+WHERE watchers.account_id = @accountId; ";
+
+        List<WatcherAlbum> watcherAlbums = _db.Query(sql, (Watcher watcher, WatcherAlbum album, Profile account) =>
+        {
+            album.AccountId = watcher.AccountId;
+            album.WatcherId = watcher.Id;
+            album.Creator = account;
+            return album;
+        }, new { accountId }).ToList();
+        return watcherAlbums;
     }
 
     internal List<WatcherProfile> GetWatcherProfilesByAlbumId(int albumId)

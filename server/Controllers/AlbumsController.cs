@@ -1,6 +1,6 @@
 namespace postitfullstack.Controllers;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/[controller]")]
 

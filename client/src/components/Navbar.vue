@@ -17,6 +17,8 @@ watch(theme, () => {
 </script>
 
 <template>
+
+
   <nav class="navbar navbar-expand-md bg-codeworks border-bottom border-vue">
     <div class="container gap-2">
       <RouterLink :to="{ name: 'Home' }" class="d-flex align-items-center text-light">
@@ -49,9 +51,16 @@ watch(theme, () => {
       </div>
     </div>
   </nav>
+  <!-- <img class="bg-image img-fluid" src='../assets/img/bgImg.png' alt="Image"> -->
 </template>
 
 <style lang="scss" scoped>
+.bg-image {
+  min-height: 30dvh;
+  background-size: cover;
+  background-position: center;
+}
+
 a {
   text-decoration: none;
 }

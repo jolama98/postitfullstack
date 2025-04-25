@@ -1,6 +1,7 @@
 
 
 
+
 namespace postitfullstack.Services;
 
 public class WatchersService
@@ -16,6 +17,29 @@ public class WatchersService
     {
         Watcher watcher = _watchersRepository.CreateWatcher(watcherData);
         return watcher;
+    }
+
+    private Watcher GetWatcherById(int watcherId)
+    {
+        Watcher watcher = _watchersRepository.GetWatcherById(watcherId);
+
+        if (watcher == null)
+        {
+            throw new Exception("Invalid watcher id: " + watcherId);
+        }
+        return watcher;
+    }
+
+    internal void DeleteWatcher(int watcherId, Account userInfo)
+    {
+        Watcher watcher = GetWatcherById(watcherId);
+
+        if (watcher.AccountId != userInfo.Id)
+        {
+            throw new Exception($"YOU CANNOT DELETE ANOTHER USER'S WATCHER, {userInfo.Name.ToUpper()}!!!");
+        }
+
+        _watchersRepository.DeleteWatcher(watcherId);
     }
 
     internal List<WatcherAlbum> GetMyWatcherAlbum(string accountId)

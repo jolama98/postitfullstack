@@ -99,4 +99,13 @@ async function getAlbums() {
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.category-button {
+  background-size: cover;
+  background-position: bottom;
+}
+
+.create-button {
+  background-image: url(https://images.unsplash.com/photo-1497211419994-14ae40a3c7a3?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3JlZW58ZW58MHwwfDB8fHwy);
+}
+</style>

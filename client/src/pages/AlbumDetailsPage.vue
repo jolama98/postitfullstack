@@ -1,6 +1,6 @@
 <script setup>
-import { AppState } from '@/AppState.js';
-import ModalComponent from '@/components/ModalComponent.vue';
+import { AppState } from '../AppState.js';
+import ModalComponent from '../components/ModalComponent.vue';
 import PictureCard from '@/components/PictureCard.vue';
 import PictureForm from '@/components/PictureForm.vue';
 import { roomHandler } from '@/handlers/RoomHandler.js';
@@ -131,7 +131,7 @@ function leaveAlbumRoom() {
           :style="{ backgroundImage: `url(${album.coverImg})` }">
           <div class="rounded bg-dark-glass p-2 flex-grow-1">
             <div class="mb-5">
-              <h1 class="text-center">{{ album.title }}</h1>
+              <h1 class="text-center text-outline">{{ album.title }}</h1>
               <p class="fs-4">{{ album.description }}</p>
               <p v-if="album.archived" class="text-center">
                 <span class="mdi mdi-alert text-warning"></span>
@@ -141,7 +141,7 @@ function leaveAlbumRoom() {
             </div>
             <div class="d-flex justify-content-between align-items-end">
               <div class="d-flex gap-2">
-                <div class="bg-info px-4 py-1 rounded-pill">
+                <div class="bg-info px-4 py-1 rounded-pill text-outline">
                   {{ album.category }}
                 </div>
                 <button @click="archiveAlbum()" v-if="album.creatorId == account?.id"
@@ -154,7 +154,7 @@ function leaveAlbumRoom() {
                   Delete Album <span class="mdi mdi-delete-forever"></span>
                 </button>
               </div>
-              <div class="d-flex gap-2 align-items-end">
+              <div class="d-flex gap-2 align-items-end text-outline">
                 <span>created by {{ album.creator.name }}</span>
                 <img :src="album.creator.picture" :alt="album.creator.name" class="round-picture creator-picture">
               </div>
@@ -246,5 +246,14 @@ function leaveAlbumRoom() {
   position: fixed;
   bottom: 0;
   right: 0;
+}
+
+.text-outline {
+  color: white;
+  text-shadow:
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
 </style>

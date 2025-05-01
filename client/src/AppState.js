@@ -6,6 +6,14 @@ export const AppState = reactive({
   identity: null,
   /** @type {import('./models/Account.js').Account} user info from the database*/
   account: null,
-  albums: []
+  /** @type {import('./models/Album.js').Album[]} */
+  albums: [],
+  /** @type {import('./models/Album.js').Album} */
+  activeAlbum: null,
+  /** @type {import('./models/Watcher.js').WatcherProfile[]} */
+  watcherProfiles: [],
+  /** @type {import('./models/Watcher.js').WatcherAlbum[]} */
+  watcherAlbums: [],
+  // /** @type {import('./models/Picture.js').Picture[]} */
+  pictures: []
 })
-
